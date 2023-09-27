@@ -1,38 +1,39 @@
-export default class Aluno {
-    private matricula_aluno: number;
-    private nome_aluno: string;
-    private email_aluno: string;
+import Avaliador from "../interfaces/Avaliador";
 
-    constructor (
-        matricula_aluno: number, 
-        nome_aluno: string, 
-        email_aluno: string
-        ) {
-        this.matricula_aluno = matricula_aluno;
-        this.nome_aluno = nome_aluno;
-        this.email_aluno = email_aluno;
-    }
-    
-    public getMatricula_aluno(): number {
-        return this.matricula_aluno;
-    }
-    public setMatricula_aluno(value: number) {
-        this.matricula_aluno = value;
-    }
-    
-    
-    public getNome_aluno(): string {
-        return this.nome_aluno;
-    }
-    public setNome_aluno(value: string) {
-        this.nome_aluno = value;
+export default class Aluno implements Avaliador {
+
+    private matricula: string;
+    private nome: string;
+    private email: string;
+
+    constructor(matricula: string, nome: string, email: string) {
+        this.matricula = matricula;
+        this.nome = nome;
+        this.email = email;
     }
 
-
-    public getEmail_aluno(): string {
-        return this.email_aluno;
+    public getMatricula(): string {
+        return this.matricula;
     }
-    public setEmail_aluno(value: string) {
-        this.email_aluno = value;
+    public setMatricula(value: string) {
+        this.matricula = value;
+    }
+
+    public getNome(): string {
+        return this.nome;
+    }
+    public setNome(value: string) {
+        this.nome = value;
+    }
+
+    public getEmail(): string {
+        return this.email;
+    }
+    public setEmail(value: string) {
+        this.email = value;
+    }
+
+    avaliarGrupo(grupo: string, inovacao: number, maturidade: number, apresentacao: number, potencial: number): void {
+
     }
 }

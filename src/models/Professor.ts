@@ -1,36 +1,39 @@
-export class Professor {
-    private matricula_professor: number;
+import Avaliador from "../interfaces/Avaliador";
+
+export default class Professor implements Avaliador {
+
+    private matricula: string;
     private nome: string;
     private email: string;
 
-    constructor(
-        matricula_professor: number,
-        nome: string,
-        email: string
-          ) {
-        this.matricula_professor = matricula_professor;
+    constructor(matricula: string, nome: string, email: string) {
+        this.matricula = matricula;
         this.nome = nome;
         this.email = email;
     }
 
-    public getMatricula_professor(): number {
-        return this.matricula_professor;
+    public getMatricula(): string {
+        return this.matricula;
     }
-    public setMatricula_professor(matricula_professor: number): void {
-        this.matricula_professor = matricula_professor;
+    public setMatricula(value: string) {
+        this.matricula = value;
     }
 
     public getNome(): string {
         return this.nome;
     }
-    public setNome(nome: string): void {
-        this.nome = nome;
+    public setNome(value: string) {
+        this.nome = value;
     }
 
     public getEmail(): string {
         return this.email;
     }
-    public setEmail(email: string): void {
-        this.email = email;
+    public setEmail(value: string) {
+        this.email = value;
+    }
+
+    avaliarGrupo(grupo: string, inovacao: number, maturidade: number, apresentacao: number, potencial: number): void {
+
     }
 }
