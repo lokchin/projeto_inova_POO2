@@ -1,7 +1,3 @@
-import Aluno from "../models/Aluno";
-import Professor from "../models/Professor";
-import Grupo from "../models/Grupo";
-
 export default interface Avaliador {
 
     avaliarGrupo(
