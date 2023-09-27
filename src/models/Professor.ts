@@ -1,4 +1,5 @@
 import Avaliador from "../interfaces/Avaliador";
+import { PrismaClient } from "@prisma/client";
 
 export default class Professor implements Avaliador {
 
@@ -33,7 +34,24 @@ export default class Professor implements Avaliador {
         this.email = value;
     }
 
-    avaliarGrupo(grupo: string, inovacao: number, maturidade: number, apresentacao: number, potencial: number): void {
+    async avaliarGrupo(grupo: string, inovacao: number, maturidade: number, apresentacao: number, potencial: number) {
 
+        const prisma = new PrismaClient();
+
+        try {
+            await prisma.avaliacao.create({
+                data: {
+                    avaliador: this.nome,
+                    nomeGrupo: grupo,
+                    inovacao: inovacao,
+                    maturidade: maturidade,
+                    apresentacao: apresentacao,
+                    potencial: potencial,
+                }
+            });
+    
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
