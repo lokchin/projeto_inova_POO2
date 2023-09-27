@@ -12,8 +12,8 @@ model Aluno {
   email      String   @unique
   nome       String
   grupo      Grupo?   @relation("lider")
-  membros    Grupo    @relation("membros", fields: [nomeGrupo], references: [nome])
-  nomeGrupo  String
+  membros    Grupo?    @relation("membros", fields: [nomeGrupo], references: [nome])
+  nomeGrupo  String?
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 }
@@ -33,4 +33,17 @@ model Grupo {
   membros         Aluno[] @relation("membros")
   diaApresentacao DateTime
   estande         Int
+  avaliacoes      Avaliacao[] @relation("avaliacoes")
+ }
+
+ model Avaliacao {
+  avaliador    String
+  grupo        Grupo @relation("avaliacoes", fields: [nomeGrupo], references: [nome])
+  nomeGrupo    String
+  inovacao     Int
+  maturidade   Int
+  apresentacao Int
+  potencial    Int
+
+  @@id([avaliador, nomeGrupo])
  }
