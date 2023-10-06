@@ -7,17 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Aluno {
-  matricula String    @id @default(uuid())
-  email      String   @unique
-  nome       String
-  grupo      Grupo?   @relation("lider")
-  membros    Grupo?    @relation("membros", fields: [nomeGrupo], references: [nome])
-  nomeGrupo  String?
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-}
-
 model Professor{
   matricula  String   @id @default(uuid())
   email      String   @unique
@@ -26,24 +15,29 @@ model Professor{
   updated_at DateTime @default(now())
 }
 
+model Aluno {
+  matricula  String   @id @default(uuid())
+  email      String   @unique
+  nome       String
+  lider      Grupo?   @relation(name: "lider")
+  membros    Grupo[]  @relation(name: "membros")
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+}
+
 model Grupo {
-  nome            String  @id @default(uuid())
-  lider           Aluno   @relation("lider", fields: [matriculaLider], references: [matricula])
-  matriculaLider  String  @unique
-  membros         Aluno[] @relation("membros")
-  diaApresentacao DateTime
-  estande         Int
-  avaliacoes      Avaliacao[] @relation("avaliacoes")
+  nome           String  @id       @default(uuid())
+  lider          Aluno   @relation(name: "lider", fields: [liderMatricula], references: [matricula])
+  membros        Aluno   @relation(name: "membros", fields: [liderMatricula], references: [matricula])
+  liderMatricula String  @unique   @default("")
+  avaliacoes Avaliacao[] @relation(name: "avaliacao")
  }
 
  model Avaliacao {
-  avaliador    String
-  grupo        Grupo @relation("avaliacoes", fields: [nomeGrupo], references: [nome])
+  avaliador    String  @default("")
+  grupo        Grupo   @relation(name: "avaliacao", fields: [nomeGrupo], references: [nome])
   nomeGrupo    String
-  inovacao     Int
-  maturidade   Int
-  apresentacao Int
-  potencial    Int
+  nota         Int
 
   @@id([avaliador, nomeGrupo])
  }

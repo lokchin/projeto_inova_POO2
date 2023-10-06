@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/lokchin/projeto_inova_POO2#readme",
   "devDependencies": {
-    "@types/node": "^20.7.0",
+    "@types/node": "^20.8.2",
     "prisma": "^5.3.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"

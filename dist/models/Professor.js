@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("@prisma/client");
+const prisma = new client_1.PrismaClient();
 class Professor {
     constructor(matricula, nome, email) {
         this.matricula = matricula;
@@ -34,19 +35,49 @@ class Professor {
     setEmail(value) {
         this.email = value;
     }
-    avaliarGrupo(grupo, inovacao, maturidade, apresentacao, potencial) {
+    avaliarGrupo(grupo, nota) {
         return __awaiter(this, void 0, void 0, function* () {
-            const prisma = new client_1.PrismaClient();
             try {
+                // Cria um registro na tabela avaliação sem especificar o nome do grupo
                 yield prisma.avaliacao.create({
                     data: {
                         avaliador: this.nome,
-                        nomeGrupo: grupo,
-                        inovacao: inovacao,
-                        maturidade: maturidade,
-                        apresentacao: apresentacao,
-                        potencial: potencial,
+                        grupo: {
+                            connect: {
+                                nome: grupo.getNome(),
+                            }
+                        },
+                        nota: nota,
                     }
+                });
+                // Adiciona o nome do grupo no registro criado previamente
+                yield prisma.avaliacao.update({
+                    where: {
+                        avaliador_nomeGrupo: {
+                            avaliador: this.nome,
+                            nomeGrupo: grupo.getNome(),
+                        },
+                    },
+                    data: {
+                        nomeGrupo: grupo.getNome(),
+                    }
+                });
+            }
+            catch (error) {
+                console.log(error);
+            }
+        });
+    }
+    removerAvaliacao(grupo, avaliador) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield prisma.avaliacao.delete({
+                    where: {
+                        avaliador_nomeGrupo: {
+                            avaliador: avaliador,
+                            nomeGrupo: grupo.getNome(),
+                        },
+                    },
                 });
             }
             catch (error) {

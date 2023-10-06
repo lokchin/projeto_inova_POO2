@@ -21,15 +21,24 @@ class GrupoService {
     insert(grupo) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                // await prisma.grupo.create({
-                //     data: {
-                //         nome: grupo.getNome(),
-                //         // lider: grupo.getLider(),
-                //         // membros: grupo.getMembros(),
-                //         diaApresentacao: grupo.getDiaApresentacao(),
-                //         estande: grupo.getEstande(),
-                //     }
-                // });
+                // Cria um registro na tabela grupo sem especificar a matrícula do líder
+                yield prisma.grupo.create({
+                    data: {
+                        nome: grupo.getNome(),
+                        lider: {
+                            connect: {
+                                matricula: grupo.getLider().getMatricula(),
+                            },
+                        },
+                    }
+                });
+                // Adiciona a matrícula do líder no registro criado previamente
+                yield prisma.grupo.update({
+                    where: { nome: grupo.getNome() },
+                    data: {
+                        liderMatricula: grupo.getLider().getMatricula(),
+                    }
+                });
             }
             catch (error) {
                 console.log(error);

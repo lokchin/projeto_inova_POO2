@@ -16,15 +16,26 @@ class GrupoService {
 
     async insert(grupo: Grupo) {
         try {
-            // await prisma.grupo.create({
-            //     data: {
-            //         nome: grupo.getNome(),
-            //         // lider: grupo.getLider(),
-            //         // membros: grupo.getMembros(),
-            //         diaApresentacao: grupo.getDiaApresentacao(),
-            //         estande: grupo.getEstande(),
-            //     }
-            // });
+
+            // Cria um registro na tabela grupo sem especificar a matrícula do líder
+            await prisma.grupo.create({
+                data: {
+                    nome: grupo.getNome(),
+                    lider: {
+                        connect: {
+                            matricula: grupo.getLider().getMatricula(),
+                        },
+                    },
+                }
+            });
+
+            // Adiciona a matrícula do líder no registro criado previamente
+            await prisma.grupo.update({
+                where: { nome: grupo.getNome() },
+                data: {
+                    liderMatricula: grupo.getLider().getMatricula(),
+                }
+            });
         } catch (error) {
             console.log(error);
         }

@@ -1,6 +1,8 @@
 import Avaliador from "../interfaces/Avaliador";
 import { PrismaClient } from "@prisma/client";
+import Grupo from "./Grupo";
 
+const prisma = new PrismaClient();
 export default class Professor implements Avaliador {
 
     private matricula: string;
@@ -34,22 +36,52 @@ export default class Professor implements Avaliador {
         this.email = value;
     }
 
-    async avaliarGrupo(grupo: string, inovacao: number, maturidade: number, apresentacao: number, potencial: number) {
-
-        const prisma = new PrismaClient();
+    async avaliarGrupo(grupo: Grupo, nota: number) {
 
         try {
+
+            // Cria um registro na tabela avaliação sem especificar o nome do grupo
             await prisma.avaliacao.create({
                 data: {
                     avaliador: this.nome,
-                    nomeGrupo: grupo,
-                    inovacao: inovacao,
-                    maturidade: maturidade,
-                    apresentacao: apresentacao,
-                    potencial: potencial,
+                    grupo: {
+                        connect: {
+                            nome: grupo.getNome(),
+                        }
+                    },
+                    nota: nota,
                 }
             });
-    
+
+            // Adiciona o nome do grupo no registro criado previamente
+            await prisma.avaliacao.update({
+                where: {
+                    avaliador_nomeGrupo: {
+                        avaliador: this.nome,
+                        nomeGrupo: grupo.getNome(),
+                    },
+                },
+                data: {
+                    nomeGrupo: grupo.getNome(),
+                }
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async removerAvaliacao(grupo: Grupo, avaliador: string) {
+
+        try {
+            await prisma.avaliacao.delete({
+                where: {
+                    avaliador_nomeGrupo: {
+                        avaliador: avaliador,
+                        nomeGrupo: grupo.getNome(),
+                    },
+                },
+            });
         } catch (error) {
             console.log(error);
         }

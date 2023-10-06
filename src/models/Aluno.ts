@@ -1,4 +1,6 @@
+import { PrismaClient } from "@prisma/client";
 import Avaliador from "../interfaces/Avaliador";
+import Grupo from "./Grupo";
 
 export default class Aluno implements Avaliador {
 
@@ -33,7 +35,40 @@ export default class Aluno implements Avaliador {
         this.email = value;
     }
 
-    avaliarGrupo(grupo: string, inovacao: number, maturidade: number, apresentacao: number, potencial: number): void {
+    async avaliarGrupo(grupo: Grupo, nota: number) {
 
+        const prisma = new PrismaClient();
+
+        try {
+
+            // Cria um registro na tabela avaliação sem especificar o nome do grupo
+            await prisma.avaliacao.create({
+                data: {
+                    avaliador: this.nome,
+                    grupo: {
+                        connect: {
+                            nome: grupo.getNome(),
+                        }
+                    },
+                    nota: nota,
+                }
+            });
+
+            // Adiciona o nome do grupo no registro criado previamente
+            await prisma.avaliacao.update({
+                where: {
+                    avaliador_nomeGrupo: {
+                        avaliador: this.nome,
+                        nomeGrupo: grupo.getNome(),
+                    },
+                },
+                data: {
+                    nomeGrupo: grupo.getNome(),
+                }
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
