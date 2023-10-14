@@ -7,8 +7,6 @@ class GrupoService {
 
     async insert(grupo: Grupo) {
         try {
-
-            // Cria um registro na tabela grupo sem especificar a matrícula do líder
             await prisma.grupo.create({
                 data: {
                     nome: grupo.getNome(),
@@ -20,7 +18,12 @@ class GrupoService {
                 }
             });
         } catch (error) {
-            console.log(error);
+            console.log(error)
+            await prisma.$disconnect()
+            process.exit(1)
+        } finally {
+            await prisma.$disconnect()
+            process.exit(1)
         }
     }
 
@@ -38,7 +41,12 @@ class GrupoService {
                 }
             });
         } catch (error) {
-            console.log(error);
+            console.log(error)
+            await prisma.$disconnect()
+            process.exit(1)
+        } finally {
+            await prisma.$disconnect()
+            process.exit(1)
         }
     }
 
@@ -48,7 +56,12 @@ class GrupoService {
                 where: { nome: nome },
             });
         } catch (error) {
-            console.log(error);
+            console.log(error)
+            await prisma.$disconnect()
+            process.exit(1)
+        } finally {
+            await prisma.$disconnect()
+            process.exit(1)
         }
     }
 
@@ -56,7 +69,12 @@ class GrupoService {
         try {
             return await prisma.grupo.findMany();
         } catch (error) {
-            console.log(error);
+            console.log(error)
+            await prisma.$disconnect()
+            process.exit(1)
+        } finally {
+            await prisma.$disconnect()
+            process.exit(1)
         }
     }
 }

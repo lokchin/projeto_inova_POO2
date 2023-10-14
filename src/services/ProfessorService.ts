@@ -15,7 +15,12 @@ class ProfessorService {
                 }
             });
         } catch (error) {
-            console.log(error);
+            console.log(error)
+            await prisma.$disconnect()
+            process.exit(1)
+        } finally {
+            await prisma.$disconnect()
+            process.exit(1)
         }
     }
 
@@ -30,7 +35,12 @@ class ProfessorService {
                 }
             });
         } catch (error) {
-            console.log(error);
+            console.log(error)
+            await prisma.$disconnect()
+            process.exit(1)
+        } finally {
+            await prisma.$disconnect()
+            process.exit(1)
         }
     }
 
@@ -40,7 +50,12 @@ class ProfessorService {
                 where: { matricula: matricula },
             });
         } catch (error) {
-            console.log(error);
+            console.log(error)
+            await prisma.$disconnect()
+            process.exit(1)
+        } finally {
+            await prisma.$disconnect()
+            process.exit(1)
         }
     }
 
@@ -48,7 +63,12 @@ class ProfessorService {
         try {
             return await prisma.professor.findMany();
         } catch (error) {
-            console.log(error);
+            console.log(error)
+            await prisma.$disconnect()
+            process.exit(1)
+        } finally {
+            await prisma.$disconnect()
+            process.exit(1)
         }
     }
 }
