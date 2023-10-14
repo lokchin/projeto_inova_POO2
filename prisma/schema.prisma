@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Professor{
+model Professor {
   matricula  String   @id @default(uuid())
   email      String   @unique
   nome       String
@@ -26,18 +26,18 @@ model Aluno {
 }
 
 model Grupo {
-  nome           String  @id       @default(uuid())
-  lider          Aluno   @relation(name: "lider", fields: [liderMatricula], references: [matricula])
-  membros        Aluno   @relation(name: "membros", fields: [liderMatricula], references: [matricula])
-  liderMatricula String  @unique   @default("")
-  avaliacoes Avaliacao[] @relation(name: "avaliacao")
- }
+  nome           String      @id @default(uuid())
+  lider          Aluno       @relation(name: "lider", fields: [liderMatricula], references: [matricula], onUpdate: Cascade, onDelete: NoAction)
+  membros        Aluno       @relation(name: "membros", fields: [liderMatricula], references: [matricula], onUpdate: Cascade)
+  liderMatricula String      @unique @default("")
+  avaliacoes     Avaliacao[] @relation(name: "avaliacao")
+}
 
- model Avaliacao {
-  avaliador    String  @default("")
-  grupo        Grupo   @relation(name: "avaliacao", fields: [nomeGrupo], references: [nome])
-  nomeGrupo    String
-  nota         Int
+model Avaliacao {
+  avaliador String @default("")
+  grupo     Grupo  @relation(name: "avaliacao", fields: [nomeGrupo], references: [nome], onUpdate: Cascade, onDelete: Cascade)
+  nomeGrupo String
+  nota      Int
 
   @@id([avaliador, nomeGrupo])
- }
+}

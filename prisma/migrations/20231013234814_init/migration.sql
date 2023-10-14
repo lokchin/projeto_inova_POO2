@@ -19,14 +19,14 @@ CREATE TABLE "Aluno" (
 -- CreateTable
 CREATE TABLE "Grupo" (
     "nome" TEXT NOT NULL PRIMARY KEY,
-    "liderMatricula" TEXT NOT NULL,
+    "liderMatricula" TEXT NOT NULL DEFAULT '',
     CONSTRAINT "Grupo_liderMatricula_fkey" FOREIGN KEY ("liderMatricula") REFERENCES "Aluno" ("matricula") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Grupo_liderMatricula_fkey" FOREIGN KEY ("liderMatricula") REFERENCES "Aluno" ("matricula") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
 CREATE TABLE "Avaliacao" (
-    "avaliador" TEXT NOT NULL,
+    "avaliador" TEXT NOT NULL DEFAULT '',
     "nomeGrupo" TEXT NOT NULL,
     "nota" INTEGER NOT NULL,
 

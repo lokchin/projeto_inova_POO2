@@ -47,11 +47,11 @@ function main() {
         Insere avaliações na tabela avaliação
         usando a função implementada na interface Avaliador
         */
-        yield otavio.avaliarGrupo(vitalus, 10);
+        // await otavio.avaliarGrupo(vitalus, 10);
         // await joao.avaliarGrupo(vitalus, 9);
-        yield vitor.avaliarGrupo(vitalus, 8);
-        yield bruno.avaliarGrupo(vitalus, 7);
-        // await professorService.delete(otavio);
+        // await vitor.avaliarGrupo(vitalus, 8);
+        // await bruno.avaliarGrupo(vitalus, 7);
+        yield professorService.delete(otavio);
         // await alunoService.delete(joao);
         // await alunoService.delete(vitor);
         // await alunoService.delete(bruno);
