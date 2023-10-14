@@ -4,15 +4,6 @@ import Grupo from "../models/Grupo";
 const prisma = new PrismaClient();
 
 class GrupoService {
-    private static instance: GrupoService | null = null;
-
-    private constructor() { }
-
-    static getInstance(): GrupoService {
-        if (GrupoService.instance === null)
-            GrupoService.instance = new GrupoService();
-        return GrupoService.instance;
-    }
 
     async insert(grupo: Grupo) {
         try {
@@ -28,24 +19,22 @@ class GrupoService {
                     },
                 }
             });
-
-            // Adiciona a matrícula do líder no registro criado previamente
-            await prisma.grupo.update({
-                where: { nome: grupo.getNome() },
-                data: {
-                    liderMatricula: grupo.getLider().getMatricula(),
-                }
-            });
         } catch (error) {
             console.log(error);
         }
     }
 
-    async update(grupo: Grupo) {
+    async update(nome: string, grupo: Grupo) {
         try {
             await prisma.grupo.update({
-                where: { nome: grupo.getNome() },
+                where: { nome: nome },
                 data: {
+                    nome: grupo.getNome(),
+                    lider: {
+                        connect: {
+                            matricula: grupo.getLider().getMatricula(),
+                        },
+                    },
                 }
             });
         } catch (error) {
@@ -53,15 +42,23 @@ class GrupoService {
         }
     }
 
-    async delete(grupo: Grupo) {
+    async delete(nome: string) {
         try {
             await prisma.grupo.delete({
-                where: { nome: grupo.getNome() },
+                where: { nome: nome },
             });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async getAll() {
+        try {
+            return await prisma.grupo.findMany();
         } catch (error) {
             console.log(error);
         }
     }
 }
 
-export default GrupoService;
+export default new GrupoService();

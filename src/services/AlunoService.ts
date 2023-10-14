@@ -4,15 +4,6 @@ import Aluno from "../models/Aluno";
 const prisma = new PrismaClient();
 
 class AlunoService {
-    private static instance: AlunoService | null = null;
-
-    private constructor() { }
-
-    static getInstance(): AlunoService {
-        if (AlunoService.instance === null)
-            AlunoService.instance = new AlunoService();
-        return AlunoService.instance;
-    }
 
     async insert(aluno: Aluno) {
         try {
@@ -28,11 +19,14 @@ class AlunoService {
         }
     }
 
-    async update(aluno: Aluno) {
+    async update(matricula: string, aluno: Aluno) {
         try {
             await prisma.aluno.update({
-                where: { matricula: aluno.getMatricula() },
+                where: { matricula: matricula },
                 data: {
+                    matricula: aluno.getMatricula(),
+                    nome: aluno.getNome(),
+                    email: aluno.getEmail(),
                 }
             });
         } catch (error) {
@@ -40,15 +34,23 @@ class AlunoService {
         }
     }
 
-    async delete(aluno: Aluno) {
+    async delete(matricula: string) {
         try {
             await prisma.aluno.delete({
-                where: { matricula: aluno.getMatricula() },
+                where: { matricula: matricula },
             });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async getAll() {
+        try {
+            return await prisma.aluno.findMany();
         } catch (error) {
             console.log(error);
         }
     }
 }
 
-export default AlunoService;
+export default new AlunoService();
