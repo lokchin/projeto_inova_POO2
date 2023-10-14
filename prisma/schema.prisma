@@ -27,8 +27,8 @@ model Aluno {
 
 model Grupo {
   nome           String      @id @default(uuid())
-  lider          Aluno       @relation(name: "lider", fields: [liderMatricula], references: [matricula], onUpdate: Cascade, onDelete: NoAction)
-  membros        Aluno       @relation(name: "membros", fields: [liderMatricula], references: [matricula], onUpdate: Cascade)
+  lider          Aluno       @relation(name: "lider", fields: [liderMatricula], references: [matricula], onUpdate: Cascade, onDelete: Cascade)
+  membros        Aluno       @relation(name: "membros", fields: [liderMatricula], references: [matricula], onUpdate: Cascade, onDelete: Cascade)
   liderMatricula String      @unique @default("")
   avaliacoes     Avaliacao[] @relation(name: "avaliacao")
 }
