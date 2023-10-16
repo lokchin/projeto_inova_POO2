@@ -12,12 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 class ProfessorService {
-    constructor() { }
-    static getInstance() {
-        if (ProfessorService.instance === null)
-            ProfessorService.instance = new ProfessorService();
-        return ProfessorService.instance;
-    }
     insert(professor) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -31,34 +25,71 @@ class ProfessorService {
             }
             catch (error) {
                 console.log(error);
+                yield prisma.$disconnect();
+                process.exit(1);
+            }
+            finally {
+                yield prisma.$disconnect();
+                process.exit(1);
             }
         });
     }
-    update(professor) {
+    update(matricula, professor) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield prisma.professor.update({
-                    where: { matricula: professor.getMatricula() },
-                    data: {}
+                    where: { matricula: matricula },
+                    data: {
+                        matricula: professor.getMatricula(),
+                        nome: professor.getNome(),
+                        email: professor.getEmail(),
+                    }
                 });
             }
             catch (error) {
                 console.log(error);
+                yield prisma.$disconnect();
+                process.exit(1);
+            }
+            finally {
+                yield prisma.$disconnect();
+                process.exit(1);
             }
         });
     }
-    delete(professor) {
+    delete(matricula) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield prisma.professor.delete({
-                    where: { matricula: professor.getMatricula() },
+                    where: { matricula: matricula },
                 });
             }
             catch (error) {
                 console.log(error);
+                yield prisma.$disconnect();
+                process.exit(1);
+            }
+            finally {
+                yield prisma.$disconnect();
+                process.exit(1);
+            }
+        });
+    }
+    getAll() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield prisma.professor.findMany();
+            }
+            catch (error) {
+                console.log(error);
+                yield prisma.$disconnect();
+                process.exit(1);
+            }
+            finally {
+                yield prisma.$disconnect();
+                process.exit(1);
             }
         });
     }
 }
-ProfessorService.instance = null;
-exports.default = ProfessorService;
+exports.default = new ProfessorService();

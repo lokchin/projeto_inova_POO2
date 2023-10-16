@@ -12,12 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 class AlunoService {
-    constructor() { }
-    static getInstance() {
-        if (AlunoService.instance === null)
-            AlunoService.instance = new AlunoService();
-        return AlunoService.instance;
-    }
     insert(aluno) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -31,34 +25,71 @@ class AlunoService {
             }
             catch (error) {
                 console.log(error);
+                yield prisma.$disconnect();
+                process.exit(1);
+            }
+            finally {
+                yield prisma.$disconnect();
+                process.exit(1);
             }
         });
     }
-    update(aluno) {
+    update(matricula, aluno) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield prisma.aluno.update({
-                    where: { matricula: aluno.getMatricula() },
-                    data: {}
+                    where: { matricula: matricula },
+                    data: {
+                        matricula: aluno.getMatricula(),
+                        nome: aluno.getNome(),
+                        email: aluno.getEmail(),
+                    }
                 });
             }
             catch (error) {
                 console.log(error);
+                yield prisma.$disconnect();
+                process.exit(1);
+            }
+            finally {
+                yield prisma.$disconnect();
+                process.exit(1);
             }
         });
     }
-    delete(aluno) {
+    delete(matricula) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield prisma.aluno.delete({
-                    where: { matricula: aluno.getMatricula() },
+                    where: { matricula: matricula },
                 });
             }
             catch (error) {
                 console.log(error);
+                yield prisma.$disconnect();
+                process.exit(1);
+            }
+            finally {
+                yield prisma.$disconnect();
+                process.exit(1);
+            }
+        });
+    }
+    getAll() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield prisma.aluno.findMany();
+            }
+            catch (error) {
+                console.log(error);
+                yield prisma.$disconnect();
+                process.exit(1);
+            }
+            finally {
+                yield prisma.$disconnect();
+                process.exit(1);
             }
         });
     }
 }
-AlunoService.instance = null;
-exports.default = AlunoService;
+exports.default = new AlunoService();

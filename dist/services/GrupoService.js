@@ -12,16 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 class GrupoService {
-    constructor() { }
-    static getInstance() {
-        if (GrupoService.instance === null)
-            GrupoService.instance = new GrupoService();
-        return GrupoService.instance;
-    }
     insert(grupo) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                // Cria um registro na tabela grupo sem especificar a matrícula do líder
                 yield prisma.grupo.create({
                     data: {
                         nome: grupo.getNome(),
@@ -32,44 +25,77 @@ class GrupoService {
                         },
                     }
                 });
-                // Adiciona a matrícula do líder no registro criado previamente
+            }
+            catch (error) {
+                console.log(error);
+                yield prisma.$disconnect();
+                process.exit(1);
+            }
+            finally {
+                yield prisma.$disconnect();
+                process.exit(1);
+            }
+        });
+    }
+    update(nome, grupo) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
                 yield prisma.grupo.update({
-                    where: { nome: grupo.getNome() },
+                    where: { nome: nome },
                     data: {
-                        liderMatricula: grupo.getLider().getMatricula(),
+                        nome: grupo.getNome(),
+                        lider: {
+                            connect: {
+                                matricula: grupo.getLider().getMatricula(),
+                            },
+                        },
                     }
                 });
             }
             catch (error) {
                 console.log(error);
+                yield prisma.$disconnect();
+                process.exit(1);
+            }
+            finally {
+                yield prisma.$disconnect();
+                process.exit(1);
             }
         });
     }
-    update(grupo) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield prisma.grupo.update({
-                    where: { nome: grupo.getNome() },
-                    data: {}
-                });
-            }
-            catch (error) {
-                console.log(error);
-            }
-        });
-    }
-    delete(grupo) {
+    delete(nome) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield prisma.grupo.delete({
-                    where: { nome: grupo.getNome() },
+                    where: { nome: nome },
                 });
             }
             catch (error) {
                 console.log(error);
+                yield prisma.$disconnect();
+                process.exit(1);
+            }
+            finally {
+                yield prisma.$disconnect();
+                process.exit(1);
+            }
+        });
+    }
+    getAll() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield prisma.grupo.findMany();
+            }
+            catch (error) {
+                console.log(error);
+                yield prisma.$disconnect();
+                process.exit(1);
+            }
+            finally {
+                yield prisma.$disconnect();
+                process.exit(1);
             }
         });
     }
 }
-GrupoService.instance = null;
-exports.default = GrupoService;
+exports.default = new GrupoService();
