@@ -40,7 +40,6 @@ export default class Professor implements Avaliador {
 
         try {
 
-            // Cria um registro na tabela avaliação sem especificar o nome do grupo
             await prisma.avaliacao.create({
                 data: {
                     avaliador: this.nome,
@@ -52,20 +51,6 @@ export default class Professor implements Avaliador {
                     nota: nota,
                 }
             });
-
-            // Adiciona o nome do grupo no registro criado previamente
-            await prisma.avaliacao.update({
-                where: {
-                    avaliador_nomeGrupo: {
-                        avaliador: this.nome,
-                        nomeGrupo: grupo.getNome(),
-                    },
-                },
-                data: {
-                    nomeGrupo: grupo.getNome(),
-                }
-            });
-
         } catch (error) {
             console.log(error);
         }
