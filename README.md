@@ -49,7 +49,7 @@ Grupo "0..3" -- "1" Estande
 3. O grupo faz parte de um Estande, sendo que o Estande terá poderá ter de 0 à 3 grupos, vazio, ou um grupo para cada um dos três dias.
 
 ### Conexão
-Foi criada uma conexão com o servidor Express por meio de uma porta 8080 http no arquivo app:
+Foi criada uma conexão com o servidor Express, e mantido com Nodemon por meio de uma porta 8080 http no arquivo app.
 
 ```app
 export default class App {
@@ -128,47 +128,57 @@ class AlunoController {
 export default new AlunoController();
 ```
 
+## Comandos:
+
+
+## Instalações:
 
 ### Instalação do TypeScript e Prisma
 
 #### Iniciando o Node
 
-```node
+```{Bash}
 npm init -y
 ```
 
 #### Instalando o TypeScript
 
-```node
+```{Bash}
 npm install typescript ts-node @types/node --save-dev
 ```
 
 #### Inicializando e configurando o TypeScript
 
-```node
+```{Bash}
 npx tsc --init
 ```
 
 #### Instalando o Prisma CLI
 
-```node
+```{Bash}
 npm install prisma --save-dev
 ```
 
 #### Inicializando o Prisma
 
-```node
+```{Bash}
 npx prisma init --datasource-provider sqlite
 ```
 
 #### Migrando os dados para o BD utilizando o Prisma Migrate
 
-```node
+```{Bash}
 npx prisma migrate dev --name init
 ```
 
-### Instalação do Express
+#### Instalação do Express
 
-```express
+```{Bash}ess
 npm install express
+```
+
+### Instalação do Nodemon
+
+```{Bash}
+npm i nodemon
 ```
