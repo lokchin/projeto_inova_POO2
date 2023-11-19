@@ -129,6 +129,7 @@ export default new AlunoController();
 ```
 
 ## Comandos:
-
+[Clique aqui](https://github.com/lokchin/projeto_inova_POO2/blob/main/tutoriais/comandos.md)
 
 ## Instalações:
+[Clique aqui](https://github.com/lokchin/projeto_inova_POO2/blob/main/tutoriais/Instalacao.md)
