@@ -1,51 +1,50 @@
 import express from 'express';
-import Grupo from '../models/Grupo';
-import Aluno from '../models/Aluno';
 import GrupoService from '../services/GrupoService';
+import { Prisma } from '@prisma/client';
 
 class ProfessorController {
 
     public async insert(req: express.Request, res: express.Response) {
 
         try {
-            const { nome, lider, membros, diaApresentacao, estande } = req.body
+            const grupo : Prisma.GrupoCreateInput = req.body
 
-            const grupo = await GrupoService.insert(
-                new Grupo(
-                    nome,
-                    new Aluno(lider.matricula, lider.nome, lider.email),
-                    membros,
-                    diaApresentacao,
-                    estande
-                )
-            );
+            const newGrupo = await GrupoService.insert(grupo);
 
-            return res.json(grupo);
+            if (newGrupo == null) {
+                return res.json(400).json({
+                    status: 'aviso',
+                    message: 'Usuário já inserido no banco de dados'
+                })
+            } else {
+                return res.status(200).json({
+                    status: 'ok',
+                    grupo: newGrupo
+                })
+            }
         } catch (error) {
-            console.log(error);
+            return res.status(500).json({
+                error: error,
+                message: 'Inserir os dados no corpo da requisição'
+            })
         }
     }
 
     public async update(req: express.Request, res: express.Response) {
 
         try {
-            const antigoNome = req.params.nome;
-            const { nome, lider, membros, diaApresentacao, estande } = req.body
+            const newGrupo : Prisma.GrupoCreateInput = req.body
 
-            const grupo = await GrupoService.update(
-                antigoNome,
-                new Grupo(
-                    nome,
-                    new Aluno(lider.matricula, lider.nome, lider.email),
-                    membros,
-                    diaApresentacao,
-                    estande
-                )
-            );
+            await GrupoService.update(newGrupo);
 
-            return res.json(grupo);
+            return res.status(200).json({
+                status: 'ok',
+            })
         } catch (error) {
-            console.log(error);
+            return res.status(500).json({
+                error: error,
+                message: 'Inserir os dados no corpo da requisição'
+            })
         }
     }
 
@@ -54,22 +53,30 @@ class ProfessorController {
         try {
             const nome = req.params.nome;
 
-            const grupo = await GrupoService.delete(nome);
+            await GrupoService.delete(nome);
 
-            return res.json(grupo);
+            return res.status(200).json({
+                status: 'ok',
+            })
         } catch (error) {
             console.log(error);
         }
     }
 
-    public async getAll(req: express.Request, res: express.Response) {
+    public async getAll(res: express.Response) {
 
         try {
             const grupos = await GrupoService.getAll();
 
-            return res.json(grupos);
+            return res.status(200).json({
+                status: 'ok',
+                grupos: grupos
+            })
         } catch (error) {
-            console.log(error);
+            return res.status(500).json({
+                error: error,
+                message: 'Inserir os dados no corpo da requisição'
+            })
         }
     }
 }

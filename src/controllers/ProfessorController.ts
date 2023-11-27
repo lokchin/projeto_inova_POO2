@@ -1,33 +1,50 @@
 import express from 'express';
-import Professor from '../models/Professor';
 import ProfessorService from '../services/ProfessorService';
+import { Prisma } from '@prisma/client';
 
 class ProfessorController {
 
     public async insert(req: express.Request, res: express.Response) {
 
         try {
-            const { matricula, nome, email } = req.body;
+            const professor: Prisma.ProfessorCreateInput = req.body;
 
-            const professor = await ProfessorService.insert(new Professor(matricula, nome, email));
+            const newProfessor = await ProfessorService.insert(professor);
 
-            return res.json(professor);
+            if (newProfessor == null) {
+                return res.json(400).json({
+                    status: 'aviso',
+                    message: 'Usuário já inserido no banco de dados'
+                })
+            } else {
+                return res.status(200).json({
+                    status: 'ok',
+                    professor: newProfessor
+                })
+            }
         } catch (error) {
-            console.log(error);
+            return res.status(500).json({
+                error: error,
+                message: 'Inserir os dados no corpo da requisição'
+            })
         }
     }
 
     public async update(req: express.Request, res: express.Response) {
 
         try {
-            const antigaMatricula = req.params.matricula;
-            const { matricula, nome, email } = req.body;
+            const newProfessor: Prisma.ProfessorCreateInput = req.body;
 
-            const professor = await ProfessorService.update(antigaMatricula, new Professor(matricula, nome, email));
+            await ProfessorService.update(newProfessor);
 
-            return res.json(professor);
+            return res.status(200).json({
+                status: 'ok',
+            })
         } catch (error) {
-            console.log(error);
+            return res.status(500).json({
+                error: error,
+                message: 'Inserir os dados no corpo da requisição'
+            })
         }
     }
 
@@ -36,22 +53,30 @@ class ProfessorController {
         try {
             const matricula = req.params.matricula;
 
-            const professor = await ProfessorService.delete(matricula);
+            await ProfessorService.delete(matricula);
 
-            return res.json(professor);
+            return res.status(200).json({
+                status: 'ok',
+            })
         } catch (error) {
             console.log(error);
         }
     }
 
-    public async getAll(req: express.Request, res: express.Response) {
+    public async getAll(res: express.Response) {
 
         try {
-            const professors = await ProfessorService.getAll();
+            const professores = await ProfessorService.getAll();
 
-            return res.json(professors);
+            return res.status(200).json({
+                status: 'ok',
+                professores: professores
+            })
         } catch (error) {
-            console.log(error);
+            return res.status(500).json({
+                error: error,
+                message: 'Inserir os dados no corpo da requisição'
+            })
         }
     }
 }

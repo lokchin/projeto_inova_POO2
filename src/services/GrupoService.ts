@@ -1,50 +1,38 @@
-import { PrismaClient } from "@prisma/client";
-import Grupo from "../models/Grupo";
+import { Prisma, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 class GrupoService {
 
-    async insert(grupo: Grupo) {
+    async insert(grupo: Prisma.GrupoCreateInput) {
         try {
-            await prisma.grupo.create({
-                data: {
-                    nome: grupo.getNome(),
-                    lider: {
-                        connect: {
-                            matricula: grupo.getLider().getMatricula(),
-                        },
-                    },
-                }
-            });
+            const existed = await prisma.grupo.findUnique({
+                where: { nome: grupo.nome }
+            })
+
+            if (existed != null)
+                return null;
+            else {
+                const insert = await prisma.grupo.create({
+                    data: grupo
+                });
+                return insert;
+            }
         } catch (error) {
             console.log(error)
-            await prisma.$disconnect()
-            process.exit(1)
-        } finally {
             await prisma.$disconnect()
             process.exit(1)
         }
     }
 
-    async update(nome: string, grupo: Grupo) {
+    async update(grupo: Prisma.GrupoCreateInput) {
         try {
             await prisma.grupo.update({
-                where: { nome: nome },
-                data: {
-                    nome: grupo.getNome(),
-                    lider: {
-                        connect: {
-                            matricula: grupo.getLider().getMatricula(),
-                        },
-                    },
-                }
+                where: { nome: grupo.nome },
+                data: grupo
             });
         } catch (error) {
             console.log(error)
-            await prisma.$disconnect()
-            process.exit(1)
-        } finally {
             await prisma.$disconnect()
             process.exit(1)
         }
@@ -59,9 +47,6 @@ class GrupoService {
             console.log(error)
             await prisma.$disconnect()
             process.exit(1)
-        } finally {
-            await prisma.$disconnect()
-            process.exit(1)
         }
     }
 
@@ -70,9 +55,6 @@ class GrupoService {
             return await prisma.grupo.findMany();
         } catch (error) {
             console.log(error)
-            await prisma.$disconnect()
-            process.exit(1)
-        } finally {
             await prisma.$disconnect()
             process.exit(1)
         }

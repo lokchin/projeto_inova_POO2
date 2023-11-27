@@ -1,44 +1,38 @@
-import { PrismaClient } from "@prisma/client";
-import Professor from "../models/Professor";
+import { Prisma, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 class ProfessorService {
 
-    async insert(professor: Professor) {
+    async insert(professor: Prisma.ProfessorCreateInput) {
         try {
-            await prisma.professor.create({
-                data: {
-                    matricula: professor.getMatricula(),
-                    nome: professor.getNome(),
-                    email: professor.getEmail(),
-                }
-            });
+            const existed = await prisma.professor.findUnique({
+                where: { matricula: professor.matricula }
+            })
+
+            if (existed != null)
+                return null;
+            else {
+                const insert = await prisma.professor.create({
+                    data: professor
+                });
+                return insert;
+            }
         } catch (error) {
             console.log(error)
-            await prisma.$disconnect()
-            process.exit(1)
-        } finally {
             await prisma.$disconnect()
             process.exit(1)
         }
     }
 
-    async update(matricula: string, professor: Professor) {
+    async update(professor : Prisma.ProfessorCreateInput) {
         try {
             await prisma.professor.update({
-                where: { matricula: matricula },
-                data: {
-                    matricula: professor.getMatricula(),
-                    nome: professor.getNome(),
-                    email: professor.getEmail(),
-                }
+                where: { matricula: professor.matricula },
+                data: professor
             });
         } catch (error) {
             console.log(error)
-            await prisma.$disconnect()
-            process.exit(1)
-        } finally {
             await prisma.$disconnect()
             process.exit(1)
         }
@@ -53,9 +47,6 @@ class ProfessorService {
             console.log(error)
             await prisma.$disconnect()
             process.exit(1)
-        } finally {
-            await prisma.$disconnect()
-            process.exit(1)
         }
     }
 
@@ -64,9 +55,6 @@ class ProfessorService {
             return await prisma.professor.findMany();
         } catch (error) {
             console.log(error)
-            await prisma.$disconnect()
-            process.exit(1)
-        } finally {
             await prisma.$disconnect()
             process.exit(1)
         }
