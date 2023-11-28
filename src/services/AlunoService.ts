@@ -13,10 +13,7 @@ class AlunoService {
             if (existed != null)
                 return null;
             else {
-                const insert = await prisma.aluno.create({
-                    data: aluno
-                });
-                return insert;
+                return await prisma.aluno.create({ data: aluno });
             }
         } catch (error) {
             console.log(error)
@@ -25,12 +22,20 @@ class AlunoService {
         }
     }
 
-    async update(aluno : Prisma.AlunoCreateInput) {
+    async update(matricula: string, aluno: Prisma.AlunoCreateInput) {
         try {
-            await prisma.aluno.update({
-                where: { matricula: aluno.matricula },
-                data: aluno
-            });
+            const existed = await prisma.aluno.findUnique({
+                where: { matricula: matricula }
+            })
+
+            if (existed == null)
+                return null;
+            else {
+                return await prisma.aluno.update({
+                    where: { matricula: matricula },
+                    data: aluno
+                });
+            }
         } catch (error) {
             console.log(error)
             await prisma.$disconnect()
@@ -40,9 +45,15 @@ class AlunoService {
 
     async delete(matricula: string) {
         try {
-            await prisma.aluno.delete({
-                where: { matricula: matricula },
-            });
+            const existed = await prisma.aluno.findUnique({
+                where: { matricula: matricula }
+            })
+
+            if (existed == null)
+                return null;
+            else {
+                return await prisma.aluno.delete({ where: { matricula: matricula } });
+            }
         } catch (error) {
             console.log(error)
             await prisma.$disconnect()
@@ -52,8 +63,7 @@ class AlunoService {
 
     async getAll() {
         try {
-            const alunos = await prisma.aluno.findMany();
-            return alunos;
+            return await prisma.aluno.findMany();
         } catch (error) {
             console.log(error)
             await prisma.$disconnect()

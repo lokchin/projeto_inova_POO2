@@ -6,17 +6,12 @@ class ProfessorService {
 
     async insert(professor: Prisma.ProfessorCreateInput) {
         try {
-            const existed = await prisma.professor.findUnique({
-                where: { matricula: professor.matricula }
-            })
+            const existed = await prisma.professor.findUnique({ where: { matricula: professor.matricula } })
 
             if (existed != null)
                 return null;
             else {
-                const insert = await prisma.professor.create({
-                    data: professor
-                });
-                return insert;
+                return await prisma.professor.create({ data: professor });
             }
         } catch (error) {
             console.log(error)
@@ -25,12 +20,18 @@ class ProfessorService {
         }
     }
 
-    async update(professor : Prisma.ProfessorCreateInput) {
+    async update(matricula: string, professor: Prisma.ProfessorCreateInput) {
         try {
-            await prisma.professor.update({
-                where: { matricula: professor.matricula },
-                data: professor
-            });
+            const existed = await prisma.professor.findUnique({ where: { matricula: matricula } })
+
+            if (existed == null)
+                return null;
+            else {
+                return await prisma.professor.update({
+                    where: { matricula: matricula },
+                    data: professor
+                });
+            }
         } catch (error) {
             console.log(error)
             await prisma.$disconnect()
@@ -40,9 +41,13 @@ class ProfessorService {
 
     async delete(matricula: string) {
         try {
-            await prisma.professor.delete({
-                where: { matricula: matricula },
-            });
+            const existed = await prisma.professor.findUnique({ where: { matricula: matricula } })
+
+            if (existed == null)
+                return null;
+            else {
+                return await prisma.professor.delete({ where: { matricula: matricula } });
+            }
         } catch (error) {
             console.log(error)
             await prisma.$disconnect()

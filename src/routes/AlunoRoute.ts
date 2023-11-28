@@ -7,7 +7,7 @@ AlunoRoute.get("/", AlunoController.getAll);
 
 AlunoRoute.post("/insert", AlunoController.insert);
 
-AlunoRoute.patch("/update", AlunoController.update);
+AlunoRoute.patch("/update/:matricula", AlunoController.update);
 
 AlunoRoute.delete("/delete/:matricula", AlunoController.delete);
 

@@ -7,7 +7,7 @@ GrupoRoute.get("/", GrupoController.getAll);
 
 GrupoRoute.post("/insert", GrupoController.insert);
 
-GrupoRoute.patch("/update", GrupoController.update);
+GrupoRoute.patch("/update/:nome", GrupoController.update);
 
 GrupoRoute.delete("/delete/:nome", GrupoController.delete);
 

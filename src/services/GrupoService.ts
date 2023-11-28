@@ -6,17 +6,12 @@ class GrupoService {
 
     async insert(grupo: Prisma.GrupoCreateInput) {
         try {
-            const existed = await prisma.grupo.findUnique({
-                where: { nome: grupo.nome }
-            })
+            const existed = await prisma.grupo.findUnique({ where: { nome: grupo.nome } })
 
             if (existed != null)
                 return null;
             else {
-                const insert = await prisma.grupo.create({
-                    data: grupo
-                });
-                return insert;
+                return await prisma.grupo.create({ data: grupo });
             }
         } catch (error) {
             console.log(error)
@@ -25,12 +20,18 @@ class GrupoService {
         }
     }
 
-    async update(grupo: Prisma.GrupoCreateInput) {
+    async update(nome: string, grupo: Prisma.GrupoCreateInput) {
         try {
-            await prisma.grupo.update({
-                where: { nome: grupo.nome },
-                data: grupo
-            });
+            const existed = await prisma.grupo.findUnique({ where: { nome: nome } })
+
+            if (existed == null)
+                return null;
+            else {
+                return await prisma.grupo.update({
+                    where: { nome: nome },
+                    data: grupo
+                });
+            }
         } catch (error) {
             console.log(error)
             await prisma.$disconnect()
@@ -40,7 +41,7 @@ class GrupoService {
 
     async delete(nome: string) {
         try {
-            await prisma.grupo.delete({
+            return await prisma.grupo.delete({
                 where: { nome: nome },
             });
         } catch (error) {

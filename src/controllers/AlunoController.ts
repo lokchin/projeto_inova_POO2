@@ -12,20 +12,20 @@ class AlunoController {
             const newAluno = await AlunoService.insert(aluno);
 
             if (newAluno == null) {
-                return res.json(400).json({
+                return res.status(400).json({
                     status: 'aviso',
                     message: 'Usuário já inserido no banco de dados'
-                })
+                });
             } else {
                 return res.status(200).json({
                     status: 'ok',
                     aluno: newAluno
-                })
+                });
             }
         } catch (error) {
             return res.status(500).json({
                 error: error,
-                message: 'Inserir os dados no corpo da requisição'
+                message: 'Erro interno do servidor'
             })
         }
     }
@@ -33,17 +33,26 @@ class AlunoController {
     public async update(req: express.Request, res: express.Response) {
 
         try {
-            const newAluno: Prisma.AlunoCreateInput = req.body;
+            const matricula = req.params.matricula;
+            const aluno: Prisma.AlunoCreateInput = req.body;
 
-            await AlunoService.update(newAluno);
+            const newAluno = await AlunoService.update(matricula, aluno);
 
-            return res.status(200).json({
-                status: 'ok',
-            })
+            if (newAluno == null) {
+                return res.status(400).json({
+                    status: 'aviso',
+                    message: 'Usuário não existe na base de dados'
+                });
+            } else {
+                return res.status(200).json({
+                    status: 'ok',
+                    aluno: newAluno
+                });
+            }
         } catch (error) {
             return res.status(500).json({
                 error: error,
-                message: 'Inserir os dados no corpo da requisição'
+                message: 'Erro interno do servidor'
             })
         }
     }
@@ -53,17 +62,28 @@ class AlunoController {
         try {
             const matricula = req.params.matricula;
 
-            await AlunoService.delete(matricula);
+            const aluno = await AlunoService.delete(matricula);
 
-            return res.status(200).json({
-                status: 'ok',
-            })
+            if (aluno == null) {
+                return res.status(400).json({
+                    status: 'aviso',
+                    message: 'Usuário não existe na base de dados'
+                });
+            } else {
+                return res.status(200).json({
+                    status: 'ok',
+                    aluno: aluno
+                });
+            }
         } catch (error) {
-            console.log(error);
+            return res.status(500).json({
+                error: error,
+                message: 'Erro interno do servidor'
+            })
         }
     }
 
-    public async getAll(res: express.Response) {
+    public async getAll(req: express.Request, res: express.Response) {
 
         try {
             const alunos = await AlunoService.getAll();
@@ -71,7 +91,7 @@ class AlunoController {
             return res.status(200).json({
                 status: 'ok',
                 alunos: alunos
-            })
+            });
         } catch (error) {
             return res.status(500).json({
                 error: error,

@@ -7,7 +7,7 @@ ProfessorRoute.get("/", ProfessorController.getAll);
 
 ProfessorRoute.post("/insert", ProfessorController.insert);
 
-ProfessorRoute.patch("/update", ProfessorController.update);
+ProfessorRoute.patch("/update/:matricula", ProfessorController.update);
 
 ProfessorRoute.delete("/delete/:matricula", ProfessorController.delete);
 

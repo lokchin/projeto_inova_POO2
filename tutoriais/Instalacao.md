@@ -13,11 +13,11 @@ npm install prisma --save-dev
 #### Instalação do Express
 
 ```{Bash}ess
-npm install express
+npm install express @types/express --save-dev
 ```
 
 #### Instalação do Nodemon
 
 ```{Bash}
-npm i nodemon
+npm i nodemon --save-dev
 ```

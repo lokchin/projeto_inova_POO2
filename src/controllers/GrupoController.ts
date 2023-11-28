@@ -12,20 +12,20 @@ class ProfessorController {
             const newGrupo = await GrupoService.insert(grupo);
 
             if (newGrupo == null) {
-                return res.json(400).json({
+                return res.status(400).json({
                     status: 'aviso',
-                    message: 'Usuário já inserido no banco de dados'
-                })
+                    message: 'Grupo já inserido no banco de dados'
+                });
             } else {
                 return res.status(200).json({
                     status: 'ok',
                     grupo: newGrupo
-                })
+                });
             }
         } catch (error) {
             return res.status(500).json({
                 error: error,
-                message: 'Inserir os dados no corpo da requisição'
+                message: 'Erro interno do servidor'
             })
         }
     }
@@ -33,17 +33,26 @@ class ProfessorController {
     public async update(req: express.Request, res: express.Response) {
 
         try {
-            const newGrupo : Prisma.GrupoCreateInput = req.body
+            const nome = req.params.nome;
+            const grupo : Prisma.GrupoCreateInput = req.body
 
-            await GrupoService.update(newGrupo);
+            const newGrupo = await GrupoService.update(nome, grupo);
 
-            return res.status(200).json({
-                status: 'ok',
-            })
+            if (newGrupo == null) {
+                return res.status(400).json({
+                    status: 'aviso',
+                    message: 'Grupo não existe no banco de dados'
+                });
+            } else {
+                return res.status(200).json({
+                    status: 'ok',
+                    grupo: newGrupo
+                });
+            }
         } catch (error) {
             return res.status(500).json({
                 error: error,
-                message: 'Inserir os dados no corpo da requisição'
+                message: 'Erro interno do servidor'
             })
         }
     }
@@ -53,17 +62,28 @@ class ProfessorController {
         try {
             const nome = req.params.nome;
 
-            await GrupoService.delete(nome);
+            const grupo = await GrupoService.delete(nome);
 
-            return res.status(200).json({
-                status: 'ok',
-            })
+            if (grupo == null) {
+                return res.status(400).json({
+                    status: 'aviso',
+                    message: 'Grupo não existe no banco de dados'
+                });
+            } else {
+                return res.status(200).json({
+                    status: 'ok',
+                    grupo: grupo
+                });
+            }
         } catch (error) {
-            console.log(error);
+            return res.status(500).json({
+                error: error,
+                message: 'Erro interno do servidor'
+            })
         }
     }
 
-    public async getAll(res: express.Response) {
+    public async getAll(req: express.Request, res: express.Response) {
 
         try {
             const grupos = await GrupoService.getAll();
@@ -71,11 +91,11 @@ class ProfessorController {
             return res.status(200).json({
                 status: 'ok',
                 grupos: grupos
-            })
+            });
         } catch (error) {
             return res.status(500).json({
                 error: error,
-                message: 'Inserir os dados no corpo da requisição'
+                message: 'Erro interno do servidor'
             })
         }
     }

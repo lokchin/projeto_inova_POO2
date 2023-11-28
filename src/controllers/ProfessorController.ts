@@ -12,20 +12,20 @@ class ProfessorController {
             const newProfessor = await ProfessorService.insert(professor);
 
             if (newProfessor == null) {
-                return res.json(400).json({
+                return res.status(400).json({
                     status: 'aviso',
-                    message: 'Usuário já inserido no banco de dados'
-                })
+                    message: 'Professor já inserido no banco de dados'
+                });
             } else {
                 return res.status(200).json({
                     status: 'ok',
                     professor: newProfessor
-                })
+                });
             }
         } catch (error) {
             return res.status(500).json({
                 error: error,
-                message: 'Inserir os dados no corpo da requisição'
+                message: 'Erro interno do servidor'
             })
         }
     }
@@ -33,13 +33,22 @@ class ProfessorController {
     public async update(req: express.Request, res: express.Response) {
 
         try {
-            const newProfessor: Prisma.ProfessorCreateInput = req.body;
+            const matricula = req.params.matricula;
+            const professor: Prisma.ProfessorCreateInput = req.body;
 
-            await ProfessorService.update(newProfessor);
+            const newProfessor = await ProfessorService.update(matricula, professor);
 
-            return res.status(200).json({
-                status: 'ok',
-            })
+            if (newProfessor == null) {
+                return res.status(400).json({
+                    status: 'aviso',
+                    message: 'Professor não existe no banco de dados'
+                });
+            } else {
+                return res.status(200).json({
+                    status: 'ok',
+                    professor: newProfessor
+                });
+            }
         } catch (error) {
             return res.status(500).json({
                 error: error,
@@ -53,17 +62,28 @@ class ProfessorController {
         try {
             const matricula = req.params.matricula;
 
-            await ProfessorService.delete(matricula);
+            const professor = await ProfessorService.delete(matricula);
 
-            return res.status(200).json({
-                status: 'ok',
-            })
+            if (professor == null) {
+                return res.status(400).json({
+                    status: 'aviso',
+                    message: 'Professor não existe no banco de dados'
+                });
+            } else {
+                return res.status(200).json({
+                    status: 'ok',
+                    professor: professor
+                });
+            }
         } catch (error) {
-            console.log(error);
+            return res.status(500).json({
+                error: error,
+                message: 'Erro interno do servidor'
+            })
         }
     }
 
-    public async getAll(res: express.Response) {
+    public async getAll(eq: express.Request, res: express.Response) {
 
         try {
             const professores = await ProfessorService.getAll();
@@ -75,7 +95,7 @@ class ProfessorController {
         } catch (error) {
             return res.status(500).json({
                 error: error,
-                message: 'Inserir os dados no corpo da requisição'
+                message: 'Erro interno do servidor'
             })
         }
     }
