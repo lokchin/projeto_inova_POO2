@@ -126,6 +126,27 @@ class ProfessorService {
 
 export default new ProfessorService();
 ```
+#### [EstandeService](https://github.com/lokchin/projeto_inova_POO2/blob/main/src/services/EstandeService.ts)
+> Lógica do CRUD do Estande no banco de dados.
+```app
+import { Prisma, PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+class EstandeService {
+
+    async insert(estande: Prisma.EstandeCreateInput) {
+    }
+
+    async delete(numero: string) {
+    }
+
+    async getAll() {
+    }
+}
+
+export default new EstandeService();
+```
 
 </p>
 </details>
@@ -207,6 +228,27 @@ class ProfessorController {
 
 export default new ProfessorController();
 ```
+#### [EstandeController](https://github.com/lokchin/projeto_inova_POO2/blob/main/src/controllers/EstandeController.ts#L56)
+>  Recebe requisições sobre o Estande, manipula o banco de dados e retorna uma resposta.
+```app
+import express from 'express';
+import EstandeService from '../services/EstandeService';
+import { Prisma } from '@prisma/client';
+
+class EstandeController {
+
+    public async insert(req: express.Request, res: express.Response) {
+    }
+
+    public async delete(req: express.Request, res: express.Response) {
+    }
+
+    public async getAll(req: express.Request, res: express.Response) {
+    }
+}
+
+export default new EstandeController();
+```
 
 </p>
 </details>
@@ -268,6 +310,22 @@ ProfessorRoute.patch("/update/:matricula", ProfessorController.update);
 ProfessorRoute.delete("/delete/:matricula", ProfessorController.delete);
 
 export default ProfessorRoute;
+```
+#### [EstandeRoute](https://github.com/lokchin/projeto_inova_POO2/blob/main/src/routes/EstandeRoute.ts)
+> Define as rotas para as requisições HTTP para o Estande, e chama os controladores específicos.
+```app
+import { Router } from "express";
+import EstandeController from "../controllers/EstandeController";
+
+const EstandeRoute = Router();
+
+EstandeRoute.get("/", EstandeController.getAll);
+
+EstandeRoute.post("/insert", EstandeController.insert);
+
+EstandeRoute.delete("/delete/:numero", EstandeController.delete);
+
+export default EstandeRoute;
 ```
 
 </p>
