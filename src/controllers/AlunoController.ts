@@ -13,12 +13,8 @@ class AlunoController {
 
             if (newAluno == null) {
                 return res.status(400).json({
-                    status: 'aviso',
-                    message: 'Usuário já inserido no banco de dados'
-                });
-            } else {
-                return res.status(200).json({
-                    status: 'ok',
+                    status: "aviso",
+                    message: "Aluno já existe no banco de dados",
                     aluno: newAluno
                 });
             }
@@ -85,17 +81,15 @@ class AlunoController {
 
     public async getAll(req: express.Request, res: express.Response) {
 
-        try {
+        try { 
             const alunos = await AlunoService.getAll();
 
-            return res.status(200).json({
-                status: 'ok',
-                alunos: alunos
-            });
-        } catch (error) {
+            res.render("aluno", { alunos: alunos });
+        }
+        catch (error) {
             return res.status(500).json({
                 error: error,
-                message: 'Inserir os dados no corpo da requisição'
+                message: 'Erro interno do servidor'
             })
         }
     }

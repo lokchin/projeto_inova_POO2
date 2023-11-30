@@ -11,6 +11,9 @@ export default class App {
     constructor() {
         this.app = express();
         this.app.use(express.json());
+        this.app.set('view engine', 'ejs');
+        this.app.set('views', './src/views');
+        this.app.use(express.urlencoded({ extended: true }));
         this.routes();
         this.listen();
     }

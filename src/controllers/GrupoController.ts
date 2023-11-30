@@ -13,13 +13,9 @@ class ProfessorController {
 
             if (newGrupo == null) {
                 return res.status(400).json({
-                    status: 'aviso',
-                    message: 'Grupo já inserido no banco de dados'
-                });
-            } else {
-                return res.status(200).json({
-                    status: 'ok',
-                    grupo: newGrupo
+                    status: "aviso",
+                    message: "Grupo já existe no banco de dados",
+                    aluno: newGrupo
                 });
             }
         } catch (error) {
@@ -88,10 +84,7 @@ class ProfessorController {
         try {
             const grupos = await GrupoService.getAll();
 
-            return res.status(200).json({
-                status: 'ok',
-                grupos: grupos
-            });
+            res.render("grupo", { grupos: grupos });
         } catch (error) {
             return res.status(500).json({
                 error: error,

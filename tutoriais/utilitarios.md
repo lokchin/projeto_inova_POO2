@@ -40,3 +40,17 @@
   }
 }
 ```
+
+```json
+{
+  "nome": "vitalus",
+  "lider": {
+    "connect": {
+      "matricula": "123"
+    }
+  },
+  "avaliacoes": {
+   "create": []
+  }
+}
+```

@@ -13,13 +13,9 @@ class ProfessorController {
 
             if (newProfessor == null) {
                 return res.status(400).json({
-                    status: 'aviso',
-                    message: 'Professor já inserido no banco de dados'
-                });
-            } else {
-                return res.status(200).json({
-                    status: 'ok',
-                    professor: newProfessor
+                    status: "aviso",
+                    message: "Professor já existe no banco de dados",
+                    aluno: newProfessor
                 });
             }
         } catch (error) {
@@ -83,16 +79,14 @@ class ProfessorController {
         }
     }
 
-    public async getAll(eq: express.Request, res: express.Response) {
+    public async getAll(req: express.Request, res: express.Response) {
 
-        try {
+        try { 
             const professores = await ProfessorService.getAll();
 
-            return res.status(200).json({
-                status: 'ok',
-                professores: professores
-            })
-        } catch (error) {
+            res.render("professor", { professores: professores });
+        }
+        catch (error) {
             return res.status(500).json({
                 error: error,
                 message: 'Erro interno do servidor'
