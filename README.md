@@ -333,7 +333,7 @@ export default EstandeRoute;
 
 
 ## Conexão
-Foi criada uma conexão com o servidor Express na porta 8080 e a fonte de inserção na pilha da EJS.
+Foi criada uma conexão com o servidor Express na porta 8080 e a fonte de inserção utiliza o template EJS como views.
 
 ```app
 import express from 'express';
