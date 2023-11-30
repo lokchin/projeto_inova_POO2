@@ -290,9 +290,4 @@ export default class App {
 ## Visualizações
 > A GUI para CRUD foi feito usando EJS
 
-![GUI](./tutoriais/image.png)
-
-
-### [Comandos](https://github.com/lokchin/projeto_inova_POO2/blob/main/tutoriais/comandos.md)
-
-### [Instalações](https://github.com/lokchin/projeto_inova_POO2/blob/main/tutoriais/Instalacao.md)
+![GUI](https://github.com/lokchin/projeto_inova_POO2/blob/main/assetsMD/image.png)
