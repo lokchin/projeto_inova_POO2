@@ -15,23 +15,15 @@ class GrupoService {
     insert(grupo) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield prisma.grupo.create({
-                    data: {
-                        nome: grupo.getNome(),
-                        lider: {
-                            connect: {
-                                matricula: grupo.getLider().getMatricula(),
-                            },
-                        },
-                    }
-                });
+                const existed = yield prisma.grupo.findUnique({ where: { nome: grupo.nome } });
+                if (existed != null)
+                    return null;
+                else {
+                    return yield prisma.grupo.create({ data: grupo });
+                }
             }
             catch (error) {
                 console.log(error);
-                yield prisma.$disconnect();
-                process.exit(1);
-            }
-            finally {
                 yield prisma.$disconnect();
                 process.exit(1);
             }
@@ -40,24 +32,18 @@ class GrupoService {
     update(nome, grupo) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield prisma.grupo.update({
-                    where: { nome: nome },
-                    data: {
-                        nome: grupo.getNome(),
-                        lider: {
-                            connect: {
-                                matricula: grupo.getLider().getMatricula(),
-                            },
-                        },
-                    }
-                });
+                const existed = yield prisma.grupo.findUnique({ where: { nome: nome } });
+                if (existed == null)
+                    return null;
+                else {
+                    return yield prisma.grupo.update({
+                        where: { nome: nome },
+                        data: grupo
+                    });
+                }
             }
             catch (error) {
                 console.log(error);
-                yield prisma.$disconnect();
-                process.exit(1);
-            }
-            finally {
                 yield prisma.$disconnect();
                 process.exit(1);
             }
@@ -66,16 +52,12 @@ class GrupoService {
     delete(nome) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield prisma.grupo.delete({
+                return yield prisma.grupo.delete({
                     where: { nome: nome },
                 });
             }
             catch (error) {
                 console.log(error);
-                yield prisma.$disconnect();
-                process.exit(1);
-            }
-            finally {
                 yield prisma.$disconnect();
                 process.exit(1);
             }
@@ -88,10 +70,6 @@ class GrupoService {
             }
             catch (error) {
                 console.log(error);
-                yield prisma.$disconnect();
-                process.exit(1);
-            }
-            finally {
                 yield prisma.$disconnect();
                 process.exit(1);
             }

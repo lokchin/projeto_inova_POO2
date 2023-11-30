@@ -11,15 +11,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
-class ProfessorService {
-    insert(professor) {
+class EstandeService {
+    insert(estande) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const existed = yield prisma.professor.findUnique({ where: { matricula: professor.matricula } });
+                const existed = yield prisma.estande.findUnique({
+                    where: { numero: estande.numero }
+                });
                 if (existed != null)
                     return null;
                 else {
-                    return yield prisma.professor.create({ data: professor });
+                    return yield prisma.estande.create({ data: estande });
                 }
             }
             catch (error) {
@@ -29,35 +31,12 @@ class ProfessorService {
             }
         });
     }
-    update(matricula, professor) {
+    delete(numero) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const existed = yield prisma.professor.findUnique({ where: { matricula: matricula } });
-                if (existed == null)
-                    return null;
-                else {
-                    return yield prisma.professor.update({
-                        where: { matricula: matricula },
-                        data: professor
-                    });
-                }
-            }
-            catch (error) {
-                console.log(error);
-                yield prisma.$disconnect();
-                process.exit(1);
-            }
-        });
-    }
-    delete(matricula) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const existed = yield prisma.professor.findUnique({ where: { matricula: matricula } });
-                if (existed == null)
-                    return null;
-                else {
-                    return yield prisma.professor.delete({ where: { matricula: matricula } });
-                }
+                return yield prisma.estande.delete({
+                    where: { numero: numero },
+                });
             }
             catch (error) {
                 console.log(error);
@@ -69,7 +48,7 @@ class ProfessorService {
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield prisma.professor.findMany();
+                return yield prisma.estande.findMany();
             }
             catch (error) {
                 console.log(error);
@@ -79,4 +58,4 @@ class ProfessorService {
         });
     }
 }
-exports.default = new ProfessorService();
+exports.default = new EstandeService();

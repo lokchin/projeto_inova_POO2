@@ -38,7 +38,6 @@ class Professor {
     avaliarGrupo(grupo, nota) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                // Cria um registro na tabela avaliação sem especificar o nome do grupo
                 yield prisma.avaliacao.create({
                     data: {
                         avaliador: this.nome,
@@ -48,18 +47,6 @@ class Professor {
                             }
                         },
                         nota: nota,
-                    }
-                });
-                // Adiciona o nome do grupo no registro criado previamente
-                yield prisma.avaliacao.update({
-                    where: {
-                        avaliador_nomeGrupo: {
-                            avaliador: this.nome,
-                            nomeGrupo: grupo.getNome(),
-                        },
-                    },
-                    data: {
-                        nomeGrupo: grupo.getNome(),
                     }
                 });
             }

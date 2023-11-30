@@ -15,20 +15,17 @@ class AlunoService {
     insert(aluno) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield prisma.aluno.create({
-                    data: {
-                        matricula: aluno.getMatricula(),
-                        nome: aluno.getNome(),
-                        email: aluno.getEmail(),
-                    }
+                const existed = yield prisma.aluno.findUnique({
+                    where: { matricula: aluno.matricula }
                 });
+                if (existed != null)
+                    return null;
+                else {
+                    return yield prisma.aluno.create({ data: aluno });
+                }
             }
             catch (error) {
                 console.log(error);
-                yield prisma.$disconnect();
-                process.exit(1);
-            }
-            finally {
                 yield prisma.$disconnect();
                 process.exit(1);
             }
@@ -37,21 +34,20 @@ class AlunoService {
     update(matricula, aluno) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield prisma.aluno.update({
-                    where: { matricula: matricula },
-                    data: {
-                        matricula: aluno.getMatricula(),
-                        nome: aluno.getNome(),
-                        email: aluno.getEmail(),
-                    }
+                const existed = yield prisma.aluno.findUnique({
+                    where: { matricula: matricula }
                 });
+                if (existed == null)
+                    return null;
+                else {
+                    return yield prisma.aluno.update({
+                        where: { matricula: matricula },
+                        data: aluno
+                    });
+                }
             }
             catch (error) {
                 console.log(error);
-                yield prisma.$disconnect();
-                process.exit(1);
-            }
-            finally {
                 yield prisma.$disconnect();
                 process.exit(1);
             }
@@ -60,16 +56,17 @@ class AlunoService {
     delete(matricula) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield prisma.aluno.delete({
-                    where: { matricula: matricula },
+                const existed = yield prisma.aluno.findUnique({
+                    where: { matricula: matricula }
                 });
+                if (existed == null)
+                    return null;
+                else {
+                    return yield prisma.aluno.delete({ where: { matricula: matricula } });
+                }
             }
             catch (error) {
                 console.log(error);
-                yield prisma.$disconnect();
-                process.exit(1);
-            }
-            finally {
                 yield prisma.$disconnect();
                 process.exit(1);
             }
@@ -82,10 +79,6 @@ class AlunoService {
             }
             catch (error) {
                 console.log(error);
-                yield prisma.$disconnect();
-                process.exit(1);
-            }
-            finally {
                 yield prisma.$disconnect();
                 process.exit(1);
             }

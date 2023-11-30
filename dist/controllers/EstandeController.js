@@ -12,45 +12,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const GrupoService_1 = __importDefault(require("../services/GrupoService"));
-class ProfessorController {
+const EstandeService_1 = __importDefault(require("../services/EstandeService"));
+class EstandeController {
     insert(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const grupo = req.body;
-                const newGrupo = yield GrupoService_1.default.insert(grupo);
-                if (newGrupo == null) {
+                const estande = req.body;
+                const newEstande = yield EstandeService_1.default.insert(estande);
+                if (newEstande == null) {
                     return res.status(400).json({
                         status: "aviso",
-                        message: "Grupo já existe no banco de dados",
-                        aluno: newGrupo
-                    });
-                }
-            }
-            catch (error) {
-                return res.status(500).json({
-                    error: error,
-                    message: 'Erro interno do servidor'
-                });
-            }
-        });
-    }
-    update(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const nome = req.params.nome;
-                const grupo = req.body;
-                const newGrupo = yield GrupoService_1.default.update(nome, grupo);
-                if (newGrupo == null) {
-                    return res.status(400).json({
-                        status: 'aviso',
-                        message: 'Grupo não existe no banco de dados'
-                    });
-                }
-                else {
-                    return res.status(200).json({
-                        status: 'ok',
-                        grupo: newGrupo
+                        message: "Estande já existe no banco de dados",
+                        estande: newEstande
                     });
                 }
             }
@@ -65,18 +38,18 @@ class ProfessorController {
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const nome = req.params.nome;
-                const grupo = yield GrupoService_1.default.delete(nome);
-                if (grupo == null) {
+                const numero = req.params.numero;
+                const estande = yield EstandeService_1.default.delete(numero);
+                if (estande == null) {
                     return res.status(400).json({
                         status: 'aviso',
-                        message: 'Grupo não existe no banco de dados'
+                        message: 'Estande não existe na base de dados'
                     });
                 }
                 else {
                     return res.status(200).json({
                         status: 'ok',
-                        grupo: grupo
+                        estande: estande
                     });
                 }
             }
@@ -91,8 +64,8 @@ class ProfessorController {
     getAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const grupos = yield GrupoService_1.default.getAll();
-                res.render("grupo", { grupos: grupos });
+                const estandes = yield EstandeService_1.default.getAll();
+                res.render("estande", { estandes: estandes });
             }
             catch (error) {
                 return res.status(500).json({
@@ -103,4 +76,4 @@ class ProfessorController {
         });
     }
 }
-exports.default = new ProfessorController();
+exports.default = new EstandeController();

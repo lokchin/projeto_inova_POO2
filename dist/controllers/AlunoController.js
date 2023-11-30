@@ -12,31 +12,53 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Aluno_1 = __importDefault(require("../models/Aluno"));
 const AlunoService_1 = __importDefault(require("../services/AlunoService"));
 class AlunoController {
     insert(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { matricula, nome, email } = req.body;
-                const aluno = yield AlunoService_1.default.insert(new Aluno_1.default(matricula, nome, email));
-                return res.json(aluno);
+                const aluno = req.body;
+                const newAluno = yield AlunoService_1.default.insert(aluno);
+                if (newAluno == null) {
+                    return res.status(400).json({
+                        status: "aviso",
+                        message: "Aluno já existe no banco de dados",
+                        aluno: newAluno
+                    });
+                }
             }
             catch (error) {
-                console.log(error);
+                return res.status(500).json({
+                    error: error,
+                    message: 'Erro interno do servidor'
+                });
             }
         });
     }
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const antigaMatricula = req.params.matricula;
-                const { matricula, nome, email } = req.body;
-                const aluno = yield AlunoService_1.default.update(antigaMatricula, new Aluno_1.default(matricula, nome, email));
-                return res.json(aluno);
+                const matricula = req.params.matricula;
+                const aluno = req.body;
+                const newAluno = yield AlunoService_1.default.update(matricula, aluno);
+                if (newAluno == null) {
+                    return res.status(400).json({
+                        status: 'aviso',
+                        message: 'Aluno não existe na base de dados'
+                    });
+                }
+                else {
+                    return res.status(200).json({
+                        status: 'ok',
+                        aluno: newAluno
+                    });
+                }
             }
             catch (error) {
-                console.log(error);
+                return res.status(500).json({
+                    error: error,
+                    message: 'Erro interno do servidor'
+                });
             }
         });
     }
@@ -45,10 +67,24 @@ class AlunoController {
             try {
                 const matricula = req.params.matricula;
                 const aluno = yield AlunoService_1.default.delete(matricula);
-                return res.json(aluno);
+                if (aluno == null) {
+                    return res.status(400).json({
+                        status: 'aviso',
+                        message: 'Aluno não existe na base de dados'
+                    });
+                }
+                else {
+                    return res.status(200).json({
+                        status: 'ok',
+                        aluno: aluno
+                    });
+                }
             }
             catch (error) {
-                console.log(error);
+                return res.status(500).json({
+                    error: error,
+                    message: 'Erro interno do servidor'
+                });
             }
         });
     }
@@ -56,10 +92,13 @@ class AlunoController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const alunos = yield AlunoService_1.default.getAll();
-                return res.json(alunos);
+                res.render("aluno", { alunos: alunos });
             }
             catch (error) {
-                console.log(error);
+                return res.status(500).json({
+                    error: error,
+                    message: 'Erro interno do servidor'
+                });
             }
         });
     }
