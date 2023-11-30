@@ -48,10 +48,12 @@ Grupo "0..3" -- "1" Estande
 2. Um grupo é constituído por 1 à 4 alunos, sendo um deles o líder.
 3. O grupo faz parte de um Estande, e possui um dia de apresentação.
 
+<br>
 
+<details>
+<summary>Serviços</summary>
+<p>
 
-
-## Serviços
 #### [AlunoService](https://github.com/lokchin/projeto_inova_POO2/blob/main/src/services/AlunoService.ts)
 > Lógica do CRUD do Aluno no banco de dados.
 ```app
@@ -125,7 +127,14 @@ class ProfessorService {
 export default new ProfessorService();
 ```
 
-## Controladores
+</p>
+</details>
+
+
+<details>
+<summary>Controladores</summary>
+<p>
+
 #### [AlunoController](https://github.com/lokchin/projeto_inova_POO2/blob/main/src/controllers/AlunoController.ts)
 > Recebe requisições sobre o Aluno, manipula o banco de dados e retorna uma resposta.
 ```app
@@ -199,7 +208,13 @@ class ProfessorController {
 export default new ProfessorController();
 ```
 
-## Rotas
+</p>
+</details>
+
+<details>
+<summary>Rotas</summary>
+<p>
+
 #### [AlunoRoute](https://github.com/lokchin/projeto_inova_POO2/blob/main/src/routes/AlunoRoute.ts)
 > Define as rotas para as requisições HTTP para o Aluno, e chama os controladores específicos.
 ```app
@@ -254,6 +269,9 @@ ProfessorRoute.delete("/delete/:matricula", ProfessorController.delete);
 
 export default ProfessorRoute;
 ```
+
+</p>
+</details>
 
 
 ## Conexão
