@@ -40,7 +40,6 @@ export default class Aluno implements Avaliador {
         const prisma = new PrismaClient();
 
         try {
-
             await prisma.avaliacao.create({
                 data: {
                     avaliador: this.nome,

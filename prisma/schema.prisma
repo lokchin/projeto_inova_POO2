@@ -31,10 +31,17 @@ model Grupo {
   membros        Aluno       @relation(name: "membros", fields: [liderMatricula], references: [matricula], onUpdate: Cascade, onDelete: Cascade)
   liderMatricula String      @unique @default("")
   avaliacoes     Avaliacao[] @relation(name: "avaliacao")
+  estande        Estande     @relation(name: "grupo", fields: [estandeNumero], references: [numero], onUpdate: Cascade, onDelete: Cascade)
+  estandeNumero  String      @default("")
+}
+
+model Estande {
+  numero String  @id @default(uuid())
+  grupos Grupo[] @relation(name: "grupo")
 }
 
 model Avaliacao {
-  avaliador String @default("")
+  avaliador String
   grupo     Grupo  @relation(name: "avaliacao", fields: [nomeGrupo], references: [nome], onUpdate: Cascade, onDelete: Cascade)
   nomeGrupo String
   nota      Int

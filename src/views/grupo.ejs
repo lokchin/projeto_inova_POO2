@@ -97,15 +97,19 @@
 
          -->
         <form id="form-inserir-grupo" class="row g-3" style="width: 60% !important;">
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <input type="text" name="inserirNome" id="inserirNome" class="form-control" placeholder="Nome do grupo"
                     aria-label="Nome do grupo">
             </div>
-            <div class="col-md-5">
+            <div class="col-md-6">
+                <input type="text" name="inserirEstande" id="inserirEstande" class="form-control"
+                    placeholder="Estande do grupo" aria-label="Estande do grupo">
+            </div>
+            <div class="col-md-9">
                 <input type="text" name="inserirLider" id="inserirLider" class="form-control"
                     placeholder="Matrícula do líder" aria-label="Matrícula do líder">
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <button type="submit" class="btn btn-primary" style="width: 100%;" onclick="inserirGrupo()">
                     Inserir
                 </button>
@@ -121,6 +125,7 @@
                 <tr>
                     <th scope="col">Nome</th>
                     <th scope="col">Líder</th>
+                    <th scope="col">Estande</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
                 </tr>
@@ -133,6 +138,9 @@
                         </td>
                         <td>
                             <%= grupos[i].liderMatricula %>
+                        </td>
+                        <td>
+                            <%= grupos[i].estandeNumero %>
                         </td>
                         <td>
                             <button type="button" class="btn btn-warning" data-bs-toggle="modal"
@@ -169,13 +177,17 @@
 
                      -->
                     <form class="row g-3">
+                        <div class="col-12">
+                            <input type="text" name="atualizarLider" id="atualizarLider" class="form-control"
+                                placeholder="Matrícula do líder" aria-label="Matrícula do líder">
+                        </div>
                         <div class="col-md-6">
                             <input type="text" name="atualizarNome" id="atualizarNome" class="form-control"
                                 placeholder="Nome do grupo" aria-label="Nome do grupo">
                         </div>
                         <div class="col-md-6">
-                            <input type="text" name="atualizarLider" id="atualizarLider" class="form-control"
-                                placeholder="Matrícula do líder" aria-label="Matrícula do líder">
+                            <input type="text" name="atualizarEstande" id="atualizarEstande" class="form-control"
+                                placeholder="Estande do grupo" aria-label="Estande do grupo">
                         </div>
                     </form>
                 </div>
@@ -191,12 +203,18 @@
         function inserirGrupo() {
             let nome = document.getElementById('inserirNome').value;
             let lider = document.getElementById('inserirLider').value;
+            let estande = document.getElementById('inserirEstande').value;
 
             let body = JSON.stringify({
                 nome: nome,
                 lider: {
                     connect: {
                         matricula: lider
+                    }
+                },
+                estande: {
+                    connect: {
+                        numero: estande
                     }
                 },
                 avaliacoes: {
@@ -216,6 +234,7 @@
         function alterarGrupo() {
             let nome = document.getElementById('atualizarNome').value;
             let lider = document.getElementById('atualizarLider').value;
+            let estande = document.getElementById('atualizarEstande').value;
 
             let body = JSON.stringify({
                 nome: nome,
@@ -223,7 +242,12 @@
                     connect: {
                         matricula: lider
                     }
-                }
+                },
+                estande: {
+                    connect: {
+                        numero: estande
+                    }
+                },
             });
 
             fetch(`/grupo/update/${nome}`, {

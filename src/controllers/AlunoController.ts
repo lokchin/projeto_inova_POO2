@@ -37,7 +37,7 @@ class AlunoController {
             if (newAluno == null) {
                 return res.status(400).json({
                     status: 'aviso',
-                    message: 'Usuário não existe na base de dados'
+                    message: 'Aluno não existe na base de dados'
                 });
             } else {
                 return res.status(200).json({
@@ -63,7 +63,7 @@ class AlunoController {
             if (aluno == null) {
                 return res.status(400).json({
                     status: 'aviso',
-                    message: 'Usuário não existe na base de dados'
+                    message: 'Aluno não existe na base de dados'
                 });
             } else {
                 return res.status(200).json({

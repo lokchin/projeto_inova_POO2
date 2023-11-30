@@ -2,6 +2,7 @@ import express from 'express';
 import AlunoRoute from './routes/AlunoRoute';
 import ProfessorRoute from './routes/ProfessorRoute';
 import GrupoRoute from './routes/GrupoRoute';
+import EstandeRoute from './routes/EstandeRoute';
 
 export default class App {
 
@@ -30,5 +31,6 @@ export default class App {
         this.app.use("/aluno", AlunoRoute);
         this.app.use("/professor", ProfessorRoute);
         this.app.use("/grupo", GrupoRoute);
+        this.app.use("/estande", EstandeRoute);
     }
 }
