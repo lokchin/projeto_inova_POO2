@@ -50,8 +50,8 @@ Grupo "0..3" -- "1" Estande
 
 <br>
 
-<details style="border-inline: 1px solid; border-radius: 5px; padding: 7px;">
-<summary ><span style="font-size: 1.7em;">Serviços</summary>
+<details>
+<summary>Serviços</summary>
 <p>
 
 #### [AlunoService](https://github.com/lokchin/projeto_inova_POO2/blob/main/src/services/AlunoService.ts)
@@ -152,8 +152,8 @@ export default new EstandeService();
 </details>
 
 
-<details style="border-inline: 1px solid; border-radius: 5px; padding: 7px;">
-<summary ><span style="font-size: 1.7em">Controladores</summary>
+<details>
+<summary>Controladores</summary>
 <p>
 
 #### [AlunoController](https://github.com/lokchin/projeto_inova_POO2/blob/main/src/controllers/AlunoController.ts)
@@ -253,8 +253,8 @@ export default new EstandeController();
 </p>
 </details>
 
-<details style="border-inline: 1px solid; border-radius: 5px; padding: 7px;">
-<summary ><span style="font-size: 1.7em">Rotas</summary>
+<details>
+<summary>Rotas</summary>
 <p>
 
 #### [AlunoRoute](https://github.com/lokchin/projeto_inova_POO2/blob/main/src/routes/AlunoRoute.ts)
