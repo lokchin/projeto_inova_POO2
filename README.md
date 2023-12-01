@@ -45,7 +45,7 @@ Grupo "0..3" -- "1" Estande
 ```
 
 1. Professor e Aluno podem avaliar, então foi definida a interface Avaliador que possui o método ```avaliarGrupo()``` para ser utilizada.
-2. Um grupo é constituído por 1 à 4 alunos, sendo um deles o líder.
+2. Um grupo é constituído por 1 a 4 alunos, sendo um deles o líder.
 3. O grupo faz parte de um Estande, e possui um dia de apresentação.
 
 <br>
