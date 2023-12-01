@@ -1,4 +1,5 @@
 # Sistema de avaliação para o InovaWeek
+##### Integrantes: Bruno Lokchin, Vitor Lugon, João Lucas Assis
 
 ### Sistema que auxilia a avaliação e inserção das notas dos grupos do InovaWeek 2023.
 > Escrito em TypeScript, banco de dados SQLite, ORM Prisma, servidor Express, visualização EJS.
